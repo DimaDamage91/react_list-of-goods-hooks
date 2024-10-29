@@ -2,7 +2,7 @@ import 'bulma/css/bulma.css';
 import './App.scss';
 import React, { useState } from 'react';
 
-export const goodsFromServer = [
+export const goodsFromServer: string[] = [
   'Dumplings',
   'Carrot',
   'Eggs',
@@ -15,14 +15,15 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-const sortFieldAlphabet = 'alphabet';
-const sortFieldLength = 'length';
-const reverseFieldGoods = 'reverse';
+enum SortType {
+  ALPHABET = 'alphabet',
+  LENGTH = 'length',
+  REVERSE = 'reverse',
+}
 
-export const App = () => {
-  const [visibleGoods, setVisibleGoods] = useState(goodsFromServer);
-  const [activeSort, setActiveSort] = useState('');
-  const [originalGoods, setOriginalGoods] = useState(goodsFromServer);
+export const App: React.FC = () => {
+  const [visibleGoods, setVisibleGoods] = useState<string[]>(goodsFromServer);
+  const [activeSort, setActiveSort] = useState<SortType | ''>('');
 
   const resetGoodsOfOrder = () => {
     setVisibleGoods(goodsFromServer);
@@ -31,23 +32,23 @@ export const App = () => {
 
   const sortGoodsAlphabetically = () => {
     setVisibleGoods(
-      [...visibleGoods].sort((good1, good2) => good1.localeCompare(good2))
+      [...goodsFromServer].sort((a, b) => a.localeCompare(b))
     );
-    setActiveSort(sortFieldAlphabet);
+    setActiveSort(SortType.ALPHABET);
   };
 
   const sortGoodsByLength = () => {
     setVisibleGoods(
-      [...visibleGoods].sort((good1, good2) => good1.length - good2.length)
+      [...goodsFromServer].sort((a, b) => a.length - b.length)
     );
-    setActiveSort(sortFieldLength);
+    setActiveSort(SortType.LENGTH);
   }
 
   const reverseGoodsOrder = () => {
     setVisibleGoods(
       [...visibleGoods].reverse()
     );
-    setActiveSort(reverseFieldGoods)
+    setActiveSort(SortType.REVERSE)
   }
 
   return (
@@ -56,7 +57,7 @@ export const App = () => {
       <button
         onClick={sortGoodsAlphabetically}
         type="button"
-        className={`button is-info ${activeSort === sortFieldAlphabet ? '' : 'is-light'}`}
+        className={`button is-info ${activeSort === SortType.ALPHABET ? '' : 'is-light'}`}
       >
         Sort alphabetically
       </button>
@@ -64,7 +65,7 @@ export const App = () => {
       <button
         onClick={sortGoodsByLength}
         type="button"
-        className={`button is-success ${activeSort === sortFieldLength ? '' : 'is-light'}`}
+        className={`button is-success ${activeSort === SortType.LENGTH ? '' : 'is-light'}`}
       >
         Sort by length
       </button>
@@ -72,11 +73,11 @@ export const App = () => {
       <button
         onClick={reverseGoodsOrder}
         type="button"
-        className={`button is-warning ${activeSort === reverseFieldGoods ? '' : 'is-light'}`}
+        className={`button is-warning ${activeSort === SortType.REVERSE ? '' : 'is-light'}`}
       >
         Reverse
       </button>
-     {JSON.stringify(visibleGoods) !== JSON.stringify(originalGoods) && (
+     {JSON.stringify(visibleGoods) !== JSON.stringify(goodsFromServer) && (
       <button
         onClick={resetGoodsOfOrder}
         type="button"
