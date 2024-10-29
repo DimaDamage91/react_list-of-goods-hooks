@@ -21,6 +21,22 @@ enum SortType {
   REVERSE = 'reverse',
 }
 
+const applySort = (goods: string[], sortType: SortType, isReversed: boolean) => {
+  let sortedGoods;
+
+  switch(sortType) {
+    case SortType.ALPHABET:
+      sortedGoods = [...goods].sort((a, b) => a.localeCompare(b));
+      break;
+    case SortType.LENGTH:
+      sortedGoods = [...goods].sort((a, b) => a.length - b.length);
+      break;
+    default:
+      return goods;
+  }
+  return isReversed ? sortedGoods.reverse() : sortedGoods;
+}
+
 export const App: React.FC = () => {
   const [visibleGoods, setVisibleGoods] = useState<string[]>(goodsFromServer);
   const [activeSort, setActiveSort] = useState<SortType | ''>('');
@@ -32,15 +48,13 @@ export const App: React.FC = () => {
   };
 
   const sortGoodsAlphabetically = () => {
-    const sortedGoods = [...goodsFromServer].sort((a, b) => a.localeCompare(b));
-    setVisibleGoods(isReversed ? sortedGoods.reverse() : sortedGoods);
+    setVisibleGoods(applySort(goodsFromServer, SortType.ALPHABET, isReversed));
     setActiveSort(SortType.ALPHABET);
     setIsReversed(false);
   };
 
   const sortGoodsByLength = () => {
-    const sortedGoods = [...goodsFromServer].sort((a, b) => a.length - b.length);
-    setVisibleGoods(isReversed ? sortedGoods.reverse() : sortedGoods);
+    setVisibleGoods(applySort(goodsFromServer, SortType.LENGTH, isReversed));
     setActiveSort(SortType.LENGTH);
     setIsReversed(false);
   }
