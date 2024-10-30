@@ -48,12 +48,10 @@ export const App: React.FC = () => {
 
   const sortGoodsAlphabetically = () => {
     setActiveSort(SortType.ALPHABET);
-    setIsReversed(false);
   };
 
   const sortGoodsByLength = () => {
     setActiveSort(SortType.LENGTH);
-    setIsReversed(false);
   }
 
   const reverseGoodsOrder = () => {
