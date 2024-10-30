@@ -38,30 +38,26 @@ const applySort = (goods: string[], sortType: SortType, isReversed: boolean) => 
 }
 
 export const App: React.FC = () => {
-  const [visibleGoods, setVisibleGoods] = useState<string[]>(goodsFromServer);
   const [activeSort, setActiveSort] = useState<SortType | ''>('');
   const [isReversed, setIsReversed] = useState(false);
 
   const resetGoodsOfOrder = () => {
-    setVisibleGoods(goodsFromServer);
     setActiveSort('');
+    setIsReversed(false);
   };
 
   const sortGoodsAlphabetically = () => {
-    setVisibleGoods(applySort(goodsFromServer, SortType.ALPHABET, isReversed));
     setActiveSort(SortType.ALPHABET);
     setIsReversed(false);
   };
 
   const sortGoodsByLength = () => {
-    setVisibleGoods(applySort(goodsFromServer, SortType.LENGTH, isReversed));
     setActiveSort(SortType.LENGTH);
     setIsReversed(false);
   }
 
   const reverseGoodsOrder = () => {
     setIsReversed(prev => !prev);
-    setVisibleGoods(prev => [...prev].reverse());
   }
 
   return (
@@ -90,7 +86,7 @@ export const App: React.FC = () => {
       >
         Reverse
       </button>
-     {JSON.stringify(visibleGoods) !== JSON.stringify(goodsFromServer) && (
+     {(activeSort || isReversed) && (
       <button
         onClick={resetGoodsOfOrder}
         type="button"
@@ -102,7 +98,7 @@ export const App: React.FC = () => {
     </div>
 
     <ul>
-      {visibleGoods.map(good => (
+      {applySort(goodsFromServer, activeSort as SortType, isReversed).map(good => (
         <li key={good} data-cy="Good">{good}</li>
       ))}
     </ul>
