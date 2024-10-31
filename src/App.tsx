@@ -32,7 +32,7 @@ const applySort = (goods: string[], sortType: SortType, isReversed: boolean) => 
       sortedGoods = [...goods].sort((a, b) => a.length - b.length);
       break;
     default:
-      return goods;
+      sortedGoods = [...goods];
   }
   return isReversed ? sortedGoods.reverse() : sortedGoods;
 }
@@ -80,7 +80,7 @@ export const App: React.FC = () => {
       <button
         onClick={reverseGoodsOrder}
         type="button"
-        className={`button is-warning ${activeSort === SortType.REVERSE ? '' : 'is-light'}`}
+        className={`button is-warning ${isReversed ? '' : 'is-light'}`}
       >
         Reverse
       </button>
